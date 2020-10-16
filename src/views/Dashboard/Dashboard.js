@@ -38,18 +38,46 @@ import {
 } from "variables/charts.js";
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
+import SideBarWatchList from "app-components/SideBarWatchList";
+import userService from 'services/UserService';
 
 const useStyles = makeStyles(styles);
 
 export default function Dashboard() {
   const classes = useStyles();
+  const stockData = [
+    ["ADANIPORTS", "", "12", "338", "347.85", "4,056.00", "7.36%"],
+    ["ADANIPORTS", "", "12", "338", "347.85", "4,056.00", "7.36%"],
+    ["ADANIPORTS", "", "12", "338", "347.85", "4,056.00", "7.36%"],
+    ["ADANIPORTS", "", "12", "338", "347.85", "4,056.00", "7.36%"],
+    ["ADANIPORTS", "", "12", "338", "347.85", "4,056.00", "7.36%"],
+    ["ADANIPORTS", "", "12", "338", "347.85", "4,056.00", "7.36%"],
+    ["ADANIPORTS", "", "12", "338", "347.85", "4,056.00", "7.36%"],
+    ["ADANIPORTS", "", "12", "338", "347.85", "4,056.00", "7.36%"],
+    ["ADANIPORTS", "", "12", "338", "347.85", "4,056.00", "7.36%"],
+    ["ADANIPORTS", "", "12", "338", "347.85", "4,056.00", "7.36%"],
+  ];
+  
   return (
     <div>
       <GridContainer>
         <GridItem xs={12} sm={6} md={12}>
-          <h2>Welcome to Financial Literacy!</h2>
+          <Card>
+            <CardHeader color="primary">
+              <h4 className={classes.cardTitleWhite}>My Portfolio</h4>
+            </CardHeader>
+            <CardBody>
+              <Table
+                tableHeaderColor="primary"
+                tableHead={["Stock Name", "M.Cap", "Qty", "Avg Price", "LTP",
+                  "Invested Val", "Weight"]}
+                tableData={stockData}
+              />
+            </CardBody>
+          </Card>
         </GridItem>
       </GridContainer>
     </div>
   );
+
 }

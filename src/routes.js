@@ -33,8 +33,16 @@ import Icons from "views/Icons/Icons.js";
 import Maps from "views/Maps/Maps.js";
 import NotificationsPage from "views/Notifications/Notifications.js";
 import PortifolioTable from "views/Porfolio/Portfolio";
+import SignIn from "views/SignIn/SignIn";
 
 const dashboardRoutes = [
+  {
+    path: "/signin",
+    name: "SignIn",
+    icon: Dashboard,
+    component: SignIn,
+    layout: "/admin"
+  },
   {
     path: "/dashboard",
     name: "Dashboard",
