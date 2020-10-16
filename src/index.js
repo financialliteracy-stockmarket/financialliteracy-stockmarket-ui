@@ -21,16 +21,19 @@ import { createBrowserHistory } from "history";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 
 // core components
-import Admin from "layouts/Admin.js";
+import UserLayout from "layouts/UserLayout";
 
 import "assets/css/material-dashboard-react.css?v=1.9.0";
+import LoginLayout from "layouts/LoginLayout";
 
 const hist = createBrowserHistory();
 
 ReactDOM.render(
   <Router history={hist}>
     <Switch>
-      <Route path="/admin" component={Admin} />
+      <Route path="/login" component={LoginLayout} />
+      <Route path="/admin" component={UserLayout} />
+
       <Redirect from="/" to="/admin/dashboard" />
     </Switch>
   </Router>,
