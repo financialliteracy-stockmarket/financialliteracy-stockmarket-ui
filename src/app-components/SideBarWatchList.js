@@ -1,5 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux'
+
 import Paper from '@material-ui/core/Paper';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -39,12 +41,17 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 };
 
-const SideBarWatchList = () => {
+const SideBarWatchList = (props) => {
   const [activeTab, setActiveTab] = React.useState(0);
 
   const handleChange = (event, newTabIndex) => {
     setActiveTab(newTabIndex)
   }
+
+  const addStockToList = (tabInd, event) => {
+    props.addToWatchList(tabInd, { name: "HDFCBANK", price: 1200.45, holdings: 100 });
+  }
+  const stocks = [...props.watchLists];
 
   return (
     <Paper variant={'outlined'} square style={{
@@ -55,27 +62,28 @@ const SideBarWatchList = () => {
       height: '100%',
       position: 'fixed'
     }}>
-      <TabPanel value={activeTab} index={0}>
-        1
-        <WatchList />
-      </TabPanel>
-      <TabPanel value={activeTab} index={1}>
-        2
-        <WatchList />
-      </TabPanel>
-      <TabPanel value={activeTab} index={2}>
-        3
-        <WatchList />
-      </TabPanel>
-      <TabPanel value={activeTab} index={3}>
-        4
-        <WatchList />
-      </TabPanel>
-      <TabPanel value={activeTab} index={4}>
-        5
-        <WatchList />
-      </TabPanel>
-
+      <div style={{ overflow: 'auto' }}>
+        <TabPanel value={activeTab} index={0}>
+          <button onClick={(event) => addStockToList(0, event)} >Add</button>
+          <WatchList stocks={stocks[0]} />
+        </TabPanel>
+        <TabPanel value={activeTab} index={1}>
+          <button onClick={(event) => addStockToList(1, event)} >Add</button>
+          <WatchList stocks={stocks[1]} />
+        </TabPanel>
+        <TabPanel value={activeTab} index={2}>
+          <button onClick={(event) => addStockToList(2, event)} >Add</button>
+          <WatchList stocks={stocks[2]} />
+        </TabPanel>
+        <TabPanel value={activeTab} index={3}>
+          <button onClick={(event) => addStockToList(3, event)} >Add</button>
+          <WatchList stocks={stocks[3]} />
+        </TabPanel>
+        <TabPanel value={activeTab} index={4}>
+          <button onClick={(event) => addStockToList(4, event)} >Add</button>
+          <WatchList stocks={stocks[4]} />
+        </TabPanel>
+      </div>
       <Tabs
         value={activeTab}
         indicatorColor="primary"
@@ -95,4 +103,15 @@ const SideBarWatchList = () => {
   )
 }
 
-export default SideBarWatchList
+
+const mapStateToProps = state => ({ watchLists: [...state.watchLists] });
+
+const mapDispatchToProps = dispatch => ({
+  addToWatchList: (tab, stockEntry) =>
+    dispatch({ type: 'ADD_TO_WATCH_LIST', tab: tab, entry: stockEntry }),
+
+  removeFromWatchList: (tab, stockEntry) =>
+    dispatch({ type: 'REMOVE_FROM_WATCH_LIST', tab: tab, entry: stockEntry })
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SideBarWatchList)

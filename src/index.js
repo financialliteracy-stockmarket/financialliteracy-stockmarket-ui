@@ -21,21 +21,26 @@ import { createBrowserHistory } from "history";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 
 // core components
-import UserLayout from "layouts/UserLayout";
+import UserLayout from "layouts/UserLayout"
+import { Provider } from 'react-redux'
 
 import "assets/css/material-dashboard-react.css?v=1.9.0";
 import LoginLayout from "layouts/LoginLayout";
+import configureStore from './redux/configureStore'
+import initialState from './redux/initial-state'
 
+const store = configureStore(initialState);
 const hist = createBrowserHistory();
 
 ReactDOM.render(
-  <Router history={hist}>
-    <Switch>
-      <Route path="/login" component={LoginLayout} />
-      <Route path="/admin" component={UserLayout} />
-
-      <Redirect from="/" to="/admin/dashboard" />
-    </Switch>
-  </Router>,
+  <Provider store={store}>
+    <Router history={hist}>
+      <Switch>
+        <Route path="/login" component={LoginLayout} />
+        <Route path="/admin" component={UserLayout} />
+        <Redirect from="/" to="/admin/dashboard" />
+      </Switch>
+    </Router>
+  </Provider>,
   document.getElementById("root")
 );
