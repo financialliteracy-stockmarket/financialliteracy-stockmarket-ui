@@ -1,5 +1,6 @@
 import React from 'react';
 import { Redirect } from "react-router-dom";
+import { connect } from 'react-redux'
 
 import { makeStyles } from "@material-ui/core/styles";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -45,8 +46,6 @@ const handleSocialLoginFailure = (err) => {
   console.error(err)
 }
 
-
-
 const onLoginFailure = (err) => {
   console.log(err);
 }
@@ -65,9 +64,15 @@ const setNodeRef = (provider, node) => {
   }
 }
 
-const SignIn = () => {
+const SignIn = (props) => {
+  console.log(props);
   const classes = useStyles();
-  const [loggedIn, setLoggedIn] = React.useState(false);
+
+  const guestLogin = () => {
+    props.onLogin({
+      userData: { name: 'Guest' }
+    });
+  }
 
   const onLoginSuccess = (user) => {
     loginService.doLogin({
@@ -76,12 +81,15 @@ const SignIn = () => {
     }).then(response => {
       console.log("Response Data", response);
       if (response.data) {
-        setLoggedIn(true);
+        props.onLogin(response.data);
       }
     }).catch(error => {
       console.error("Error while logging in", error);
     });
   }
+
+  const loggedIn = props.auth.userData !== undefined;
+  console.log("Logged In State", props, loggedIn);
 
   if (!loggedIn) {
     return (
@@ -121,7 +129,7 @@ const SignIn = () => {
                 </GridContainer>
               </CardBody>
               <CardFooter>
-                <Button color="success">Login</Button>
+                <Button color="secondary" onClick={guestLogin}>Guest Login</Button>
                 <SocialButton
                   provider='google'
                   appId={process.env.REACT_APP_GOOGLE_APP_ID}
@@ -145,4 +153,15 @@ const SignIn = () => {
   }
 }
 
-export default SignIn
+
+const mapStateToProps = state => ({ auth: { ...state.auth } });
+
+const mapDispatchToProps = dispatch => ({
+  onLogin: authData =>
+    dispatch({ type: 'DO_LOGIN', authData }),
+  onUnload: () =>
+    dispatch({ type: 'DO_LOGOUT' })
+});
+
+// export default SignIn
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

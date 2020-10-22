@@ -57,7 +57,7 @@ export default function Dashboard() {
     ["ADANIPORTS", "", "12", "338", "347.85", "4,056.00", "7.36%"],
     ["ADANIPORTS", "", "12", "338", "347.85", "4,056.00", "7.36%"],
   ];
-  
+
   return (
     <div>
       <GridContainer>
